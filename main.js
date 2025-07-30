@@ -24,7 +24,13 @@ function createMainWindow() {
   })
 
   // Load the app
-  mainWindow.loadFile('index.html')
+  if (process.argv.includes('--debug')) {
+    mainWindow.loadFile('debug.html')
+  } else if (process.argv.includes('--camera-test')) {
+    mainWindow.loadFile('camera-test.html')
+  } else {
+    mainWindow.loadFile('index.html')
+  }
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {

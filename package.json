@@ -6,6 +6,8 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --enable-logging",
+    "debug": "electron . --debug --enable-logging",
+    "camera-test": "electron . --camera-test --enable-logging",
     "build": "electron-builder",
     "build-mac": "electron-builder --mac",
     "dist": "electron-builder --publish=never",
