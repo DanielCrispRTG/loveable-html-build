@@ -321,7 +321,7 @@
                     <nav class="flex items-center">
                         <ul class="flex space-x-1">
                             <li>
-                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors bg-primary text-primary-foreground" onclick="showHome()">
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors bg-primary text-primary-foreground" data-action="show-home">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5 mr-2">
                                         <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
                                         <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -330,7 +330,7 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" onclick="showCapture()">
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" data-action="show-capture">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera w-5 h-5 mr-2">
                                         <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
                                         <circle cx="12" cy="13" r="3"></circle>
@@ -339,7 +339,7 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" onclick="showVerify()">
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" data-action="show-verify">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-5 h-5 mr-2">
                                         <rect width="5" height="5" x="3" y="3" rx="1"></rect>
                                         <rect width="5" height="5" x="16" y="3" rx="1"></rect>
@@ -363,6 +363,7 @@
             </header>
 
             <main class="container mx-auto px-4 pt-24 pb-16">
+                <div id="home-section" class="app-section">
                 <section class="max-w-4xl mx-auto text-center mb-16">
                     <div class="inline-block slide-up-transition">
                         <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">Secure Image Verification</span>
@@ -370,8 +371,8 @@
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 slide-up-transition">Authenticate Your Images with Blockchain</h1>
                     <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto slide-up-transition text-content">Capture photos, generate unique cryptographic hashes, and verify authenticity with our secure blockchain verification system.</p>
                     <div class="flex flex-wrap items-center justify-center gap-4 slide-up-transition">
-                        <button class="btn-primary" onclick="showCapture()">Get Started</button>
-                        <button class="btn-secondary" onclick="showVerify()">Verify Image</button>
+                        <button class="btn-primary" data-action="show-capture">Get Started</button>
+                        <button class="btn-secondary" data-action="show-verify">Verify Image</button>
                     </div>
                 </section>
 
@@ -386,7 +387,7 @@
                             </div>
                             <h2 class="text-xl font-semibold mb-3">Capture</h2>
                             <p class="text-muted-foreground mb-4 text-content">Take a photo using your device's camera. Our system captures metadata to prove authenticity.</p>
-                            <button class="text-primary font-medium inline-flex items-center hover:underline" onclick="showCapture()">
+                            <button class="text-primary font-medium inline-flex items-center hover:underline" data-action="show-capture">
                                 Try Capture
                                 <svg class="w-4 h-4 ml-1" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -425,7 +426,7 @@
                             </div>
                             <h2 class="text-xl font-semibold mb-3">Verify</h2>
                             <p class="text-muted-foreground mb-4 text-content">Confirm image authenticity by scanning or entering the QR code or hash.</p>
-                            <button class="text-primary font-medium inline-flex items-center hover:underline" onclick="showVerify()">
+                            <button class="text-primary font-medium inline-flex items-center hover:underline" data-action="show-verify">
                                 Verify Now
                                 <svg class="w-4 h-4 ml-1" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -505,6 +506,7 @@
                         </div>
                     </div>
                 </section>
+                </div> <!-- End home-section -->
             </main>
 
             <footer class="border-t py-10">
@@ -515,9 +517,9 @@
                             <p class="text-sm text-muted-foreground mt-1">Secure Image Verification Technology</p>
                         </div>
                         <div class="flex items-center space-x-6">
-                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showPrivacy()">Privacy Policy</button>
-                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showTerms()">Terms of Service</button>
-                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showContact()">Contact</button>
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" data-action="show-privacy">Privacy Policy</button>
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" data-action="show-terms">Terms of Service</button>
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" data-action="show-contact">Contact</button>
                         </div>
                     </div>
                     <div class="h-px bg-border my-6"></div>
@@ -527,44 +529,18 @@
         </div>
     </div>
 
-    <script>
-        // Simple navigation functions for desktop app
-        function showHome() {
-            console.log('Navigate to Home');
-            // Navigation logic would go here
-        }
-
-        function showCapture() {
-            console.log('Navigate to Capture');
-            // This would show the camera capture interface
-            alert('Camera capture functionality would be implemented here for the desktop app.');
-        }
-
-        function showVerify() {
-            console.log('Navigate to Verify');
-            // This would show the verification interface
-            alert('QR code verification functionality would be implemented here for the desktop app.');
-        }
-
-        function showPrivacy() {
-            console.log('Show Privacy Policy');
-            alert('Privacy Policy would be displayed here.');
-        }
-
-        function showTerms() {
-            console.log('Show Terms of Service');
-            alert('Terms of Service would be displayed here.');
-        }
-
-        function showContact() {
-            console.log('Show Contact');
-            alert('Contact information would be displayed here.');
-        }
-
-        // Desktop app initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('SnapHashQR Desktop App loaded successfully');
-        });
+    <!-- Load QR Scanner Library -->
+    <script type="module">
+        // Load QR Scanner as a module
+        import QrScanner from './lib/qr-scanner.min.js';
+        window.QrScanner = QrScanner;
     </script>
+    
+    <!-- Load Application Modules -->
+    <script src="./lib/hash-generator.js"></script>
+    <script src="./lib/qr-generator.js"></script>
+    <script src="./lib/camera-capture.js"></script>
+    <script src="./lib/qr-scanner-module.js"></script>
+    <script src="./lib/app-controller.js"></script>
 </body>
 </html>
