@@ -70,27 +70,39 @@ loveable-html-build/
 - ✅ Main UI (exact replica of original HTML)
 - ✅ Native macOS menu integration
 - ✅ Window management and controls
-- 🔄 Camera capture functionality (placeholder implemented)
-- 🔄 QR code scanning and generation
-- 🔄 Cryptographic hashing (SHA-256)
-- 🔄 Blockchain integration
-- 🔄 Image verification system
+- ✅ Camera capture functionality with metadata collection
+- ✅ QR code scanning with nimiq/qr-scanner library
+- ✅ Cryptographic hashing (SHA-256) with metadata
+- ✅ QR code generation for verification
+- ✅ Image verification system with local storage
+- ✅ Multi-section navigation (Home, Capture, Verify)
+- 🔄 Blockchain integration (placeholder for future enhancement)
+- 🔄 Advanced verification with external APIs
 
 ## Development Notes
 
-The current version includes the complete UI from the original HTML with:
-- All original styling and animations preserved
-- Desktop-optimized interactions (buttons instead of links)
+The current version includes:
+- Complete UI from the original HTML with desktop optimizations
+- Full camera capture functionality using WebRTC APIs
+- QR code scanning using the nimiq/qr-scanner library
+- SHA-256 hash generation with image metadata
+- QR code generation for verification sharing
+- Local storage for verification records
+- Multi-section navigation (Home, Capture, Verify)
 - Native macOS menu bar integration
-- Proper window management
-- Security-focused Electron configuration
+- Proper window management and security configuration
 
-Next development phases will include:
-1. Camera access and photo capture
-2. Cryptographic hash generation
-3. QR code creation and scanning
-4. Blockchain integration for verification
-5. Local storage for captured images and hashes
+### Integrated Libraries:
+1. **Camera Capture**: Based on jserodio/electrocam with enhancements
+2. **QR Scanner**: nimiq/qr-scanner - lightweight, high-performance QR scanning
+3. **Hash Generation**: Custom SHA-256 implementation with metadata
+4. **QR Generation**: Custom QR code generation for verification data
+
+### Current Functionality:
+- **Capture Mode**: Access camera, capture photos, generate hashes, create QR codes
+- **Verify Mode**: Scan QR codes or manually enter hashes for verification
+- **Storage**: Local verification records with image previews
+- **Security**: Cryptographic hashing with device metadata for authenticity
 
 ## Contributing
 
