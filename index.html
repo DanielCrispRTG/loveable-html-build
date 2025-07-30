@@ -1,0 +1,570 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapHashQR - Desktop</title>
+    <meta name="description" content="Secure Image Verification Desktop App">
+    <meta name="author" content="RTG">
+
+    <meta property="og:title" content="SnapHashQR Desktop App">
+    <meta property="og:description" content="Mac Desktop App for Secure Image Verification">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lovable_dev">
+  
+<style>
+	/* Base styles */
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+		line-height: 1.6;
+		color: #0f172a;
+		background: #ffffff;
+	}
+
+	/* Layout utilities */
+	.container { max-width: 1200px; margin: 0 auto; }
+	.mx-auto { margin-left: auto; margin-right: auto; }
+	.px-4 { padding-left: 1rem; padding-right: 1rem; }
+	.pt-24 { padding-top: 6rem; }
+	.pb-16 { padding-bottom: 4rem; }
+	.py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+	.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+	.py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+	.mb-4 { margin-bottom: 1rem; }
+	.mb-6 { margin-bottom: 1.5rem; }
+	.mb-8 { margin-bottom: 2rem; }
+	.mb-12 { margin-bottom: 3rem; }
+	.mb-16 { margin-bottom: 4rem; }
+	.mt-1 { margin-top: 0.25rem; }
+	.mr-2 { margin-right: 0.5rem; }
+	.ml-1 { margin-left: 0.25rem; }
+	.my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+
+	/* Flexbox utilities */
+	.flex { display: flex; }
+	.flex-col { flex-direction: column; }
+	.flex-wrap { flex-wrap: wrap; }
+	.flex-none { flex: none; }
+	.items-center { align-items: center; }
+	.justify-center { justify-content: center; }
+	.justify-between { justify-content: space-between; }
+	.space-x-1 > * + * { margin-left: 0.25rem; }
+	.space-x-2 > * + * { margin-left: 0.5rem; }
+	.space-x-6 > * + * { margin-left: 1.5rem; }
+	.space-y-4 > * + * { margin-top: 1rem; }
+	.gap-3 { gap: 0.75rem; }
+	.gap-4 { gap: 1rem; }
+	.gap-8 { gap: 2rem; }
+
+	/* Grid utilities */
+	.grid { display: grid; }
+	.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+	/* Sizing utilities */
+	.w-4 { width: 1rem; }
+	.w-5 { width: 1.25rem; }
+	.w-6 { width: 1.5rem; }
+	.w-8 { width: 2rem; }
+	.w-12 { width: 3rem; }
+	.h-4 { height: 1rem; }
+	.h-5 { height: 1.25rem; }
+	.h-6 { height: 1.5rem; }
+	.h-8 { height: 2rem; }
+	.h-10 { height: 2.5rem; }
+	.h-12 { height: 3rem; }
+	.h-16 { height: 4rem; }
+	.h-px { height: 1px; }
+	.min-h-screen { min-height: 100vh; }
+	.max-w-2xl { max-width: 42rem; }
+	.max-w-4xl { max-width: 56rem; }
+
+	/* Typography */
+	.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+	.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+	.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+	.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+	.text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+	.font-medium { font-weight: 500; }
+	.font-semibold { font-weight: 600; }
+	.font-bold { font-weight: 700; }
+	.tracking-tight { letter-spacing: -0.025em; }
+	.text-center { text-align: center; }
+
+	/* Colors */
+	.text-primary { color: #3b82f6; }
+	.text-foreground { color: #0f172a; }
+	.text-muted-foreground { color: #64748b; }
+	.bg-background { background-color: #ffffff; }
+	.bg-secondary { background-color: #f1f5f9; }
+	.bg-border { background-color: #e2e8f0; }
+	.border-b { border-bottom: 1px solid #e2e8f0; }
+	.border-t { border-top: 1px solid #e2e8f0; }
+
+	/* Position utilities */
+	.fixed { position: fixed; }
+	.relative { position: relative; }
+	.top-0 { top: 0; }
+	.left-0 { left: 0; }
+	.right-0 { right: 0; }
+	.z-50 { z-index: 50; }
+
+	/* Border radius */
+	.rounded-md { border-radius: 0.375rem; }
+	.rounded-full { border-radius: 9999px; }
+
+	/* Backdrop effects */
+	.backdrop-blur-lg { backdrop-filter: blur(16px); }
+
+	/* Opacity */
+	.bg-background\/80 { background-color: rgba(255, 255, 255, 0.8); }
+	.bg-primary\/10 { background-color: rgba(59, 130, 246, 0.1); }
+
+	/* Transitions */
+	.transition-colors { transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out; }
+	.transition-transform { transition: transform 0.15s ease-in-out; }
+	.transform { transform: translateZ(0); }
+
+	/* Hover effects */
+	.hover\:bg-secondary:hover { background-color: #f1f5f9; }
+	.hover\:text-foreground:hover { color: #0f172a; }
+	.hover\:underline:hover { text-decoration: underline; }
+	.hover\:translate-y-\[-8px\]:hover { transform: translateY(-8px); }
+
+	/* Button styles */
+	.btn-primary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		height: 2.5rem;
+		padding: 0 1rem;
+		background-color: #3b82f6;
+		color: #ffffff;
+		text-decoration: none;
+		transition: all 0.15s ease-in-out;
+		border: none;
+		cursor: pointer;
+	}
+
+	.btn-primary:hover {
+		background-color: #2563eb;
+		transform: translateY(-1px);
+	}
+
+	.btn-secondary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		height: 2.5rem;
+		padding: 0 1rem;
+		background-color: transparent;
+		color: #0f172a;
+		border: 1px solid #e2e8f0;
+		text-decoration: none;
+		transition: all 0.15s ease-in-out;
+		cursor: pointer;
+	}
+
+	.btn-secondary:hover {
+		background-color: #f1f5f9;
+		transform: translateY(-1px);
+	}
+
+	/* Navigation link styles */
+	.h-10.px-4.rounded-md.flex.items-center.justify-center.transition-colors {
+		height: 2.5rem;
+		padding: 0 1rem;
+		border-radius: 0.375rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+		text-decoration: none;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	.bg-primary.text-primary-foreground {
+		background-color: #3b82f6;
+		color: #ffffff;
+	}
+
+	.text-foreground.hover\:bg-secondary {
+		color: #0f172a;
+	}
+
+	/* Glass card effects */
+	.glass-card {
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+
+	.glass-panel {
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(15px);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 1.5rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+	}
+
+	/* Page transitions */
+	.page-transition {
+		animation: fadeIn 0.6s ease-in-out;
+	}
+
+	.slide-up-transition {
+		animation: slideUp 0.8s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@keyframes slideUp {
+		from { 
+			opacity: 0; 
+			transform: translateY(20px); 
+		}
+		to { 
+			opacity: 1; 
+			transform: translateY(0); 
+		}
+	}
+
+	/* Responsive utilities */
+	@media (min-width: 768px) {
+		.md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+		.md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+		.md\:flex-row { flex-direction: row; }
+		.md\:mb-0 { margin-bottom: 0; }
+		.md\:text-5xl { font-size: 3rem; line-height: 1; }
+		.md\:max-w-\[420px\] { max-width: 420px; }
+	}
+
+	@media (min-width: 1024px) {
+		.lg\:text-6xl { font-size: 3.75rem; line-height: 1; }
+	}
+
+	/* Hidden utilities */
+	.hidden { display: none; }
+	@media (min-width: 640px) {
+		.sm\:inline { display: inline; }
+		.sm\:bottom-0 { bottom: 0; }
+		.sm\:right-0 { right: 0; }
+		.sm\:top-auto { top: auto; }
+		.sm\:flex-col { flex-direction: column; }
+	}
+
+	/* Text decoration */
+	.inline-flex { display: inline-flex; }
+	.block { display: block; }
+
+	/* Link styling */
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	/* SVG styling */
+	svg {
+		display: block;
+	}
+
+	/* List styling */
+	ol, ul {
+		list-style: none;
+	}
+
+	/* Desktop app specific styles */
+	body {
+		-webkit-user-select: none;
+		user-select: none;
+		overflow-x: hidden;
+	}
+
+	/* Make text selectable in specific areas */
+	p, .text-content {
+		-webkit-user-select: text;
+		user-select: text;
+	}
+</style>
+</head>
+
+<body>
+    <div id="root">
+        <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;">
+            <ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol>
+        </div>
+        
+        <div class="page-transition min-h-screen">
+            <header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b">
+                <div class="container mx-auto px-4 flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-2 text-primary">
+                        <span class="font-semibold text-xl">SnapHashQR</span>
+                    </div>
+                    <nav class="flex items-center">
+                        <ul class="flex space-x-1">
+                            <li>
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors bg-primary text-primary-foreground" onclick="showHome()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5 mr-2">
+                                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">Home</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" onclick="showCapture()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera w-5 h-5 mr-2">
+                                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                        <circle cx="12" cy="13" r="3"></circle>
+                                    </svg>
+                                    <span class="hidden sm:inline">Capture</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="h-10 px-4 rounded-md flex items-center justify-center transition-colors text-foreground hover:bg-secondary" onclick="showVerify()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-5 h-5 mr-2">
+                                        <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                                        <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                                        <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                                        <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                                        <path d="M21 21v.01"></path>
+                                        <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                                        <path d="M3 12h.01"></path>
+                                        <path d="M12 3h.01"></path>
+                                        <path d="M12 16v.01"></path>
+                                        <path d="M16 12h1"></path>
+                                        <path d="M21 12v.01"></path>
+                                        <path d="M12 21v-1"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">Verify</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="container mx-auto px-4 pt-24 pb-16">
+                <section class="max-w-4xl mx-auto text-center mb-16">
+                    <div class="inline-block slide-up-transition">
+                        <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">Secure Image Verification</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 slide-up-transition">Authenticate Your Images with Blockchain</h1>
+                    <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto slide-up-transition text-content">Capture photos, generate unique cryptographic hashes, and verify authenticity with our secure blockchain verification system.</p>
+                    <div class="flex flex-wrap items-center justify-center gap-4 slide-up-transition">
+                        <button class="btn-primary" onclick="showCapture()">Get Started</button>
+                        <button class="btn-secondary" onclick="showVerify()">Verify Image</button>
+                    </div>
+                </section>
+
+                <section class="py-12">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="glass-card transform transition-transform hover:translate-y-[-8px]">
+                            <div class="rounded-full w-12 h-12 flex items-center justify-center bg-primary/10 mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera w-6 h-6 text-primary">
+                                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                    <circle cx="12" cy="13" r="3"></circle>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-semibold mb-3">Capture</h2>
+                            <p class="text-muted-foreground mb-4 text-content">Take a photo using your device's camera. Our system captures metadata to prove authenticity.</p>
+                            <button class="text-primary font-medium inline-flex items-center hover:underline" onclick="showCapture()">
+                                Try Capture
+                                <svg class="w-4 h-4 ml-1" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="glass-card transform transition-transform hover:translate-y-[-8px]">
+                            <div class="rounded-full w-12 h-12 flex items-center justify-center bg-primary/10 mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check w-6 h-6 text-primary">
+                                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-semibold mb-3">Hash</h2>
+                            <p class="text-muted-foreground mb-4 text-content">Generate a unique cryptographic hash that securely represents your image and its metadata.</p>
+                            <span class="text-muted-foreground text-sm block mt-1">SHA-256 cryptographic algorithm</span>
+                        </div>
+
+                        <div class="glass-card transform transition-transform hover:translate-y-[-8px]">
+                            <div class="rounded-full w-12 h-12 flex items-center justify-center bg-primary/10 mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-6 h-6 text-primary">
+                                    <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                                    <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                                    <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                                    <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                                    <path d="M21 21v.01"></path>
+                                    <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                                    <path d="M3 12h.01"></path>
+                                    <path d="M12 3h.01"></path>
+                                    <path d="M12 16v.01"></path>
+                                    <path d="M16 12h1"></path>
+                                    <path d="M21 12v.01"></path>
+                                    <path d="M12 21v-1"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-semibold mb-3">Verify</h2>
+                            <p class="text-muted-foreground mb-4 text-content">Confirm image authenticity by scanning or entering the QR code or hash.</p>
+                            <button class="text-primary font-medium inline-flex items-center hover:underline" onclick="showVerify()">
+                                Verify Now
+                                <svg class="w-4 h-4 ml-1" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-16">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-4">How It Works</h2>
+                        <p class="text-muted-foreground max-w-2xl mx-auto text-content">Our secure verification system uses advanced cryptography and blockchain technology to ensure your images remain authentic and tamper-proof.</p>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto glass-panel p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Capture & Hash Generation</h3>
+                                <ol class="space-y-4">
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">1</div>
+                                        <div>
+                                            <p class="text-content">Take a photo using the app's camera</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">2</div>
+                                        <div>
+                                            <p class="text-content">Metadata is automatically collected (timestamp, device info)</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">3</div>
+                                        <div>
+                                            <p class="text-content">A unique SHA-256 hash is generated from the image data and metadata</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">4</div>
+                                        <div>
+                                            <p class="text-content">Hash is stored securely and represented as a QR code</p>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Verification Process</h3>
+                                <ol class="space-y-4">
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">1</div>
+                                        <div>
+                                            <p class="text-content">Enter the image hash or scan the QR code</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">2</div>
+                                        <div>
+                                            <p class="text-content">The system verifies the hash against stored records</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">3</div>
+                                        <div>
+                                            <p class="text-content">Verification results show authentication status and metadata</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="flex-none rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center font-medium text-primary">4</div>
+                                        <div>
+                                            <p class="text-content">If verified, you can view original metadata and timestamp</p>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="border-t py-10">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="mb-4 md:mb-0">
+                            <span class="font-semibold text-lg">SnapHashQR</span>
+                            <p class="text-sm text-muted-foreground mt-1">Secure Image Verification Technology</p>
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showPrivacy()">Privacy Policy</button>
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showTerms()">Terms of Service</button>
+                            <button class="text-muted-foreground hover:text-foreground transition-colors" onclick="showContact()">Contact</button>
+                        </div>
+                    </div>
+                    <div class="h-px bg-border my-6"></div>
+                    <p class="text-center text-sm text-muted-foreground">© 2025 SnapHashQR. All rights reserved.</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Simple navigation functions for desktop app
+        function showHome() {
+            console.log('Navigate to Home');
+            // Navigation logic would go here
+        }
+
+        function showCapture() {
+            console.log('Navigate to Capture');
+            // This would show the camera capture interface
+            alert('Camera capture functionality would be implemented here for the desktop app.');
+        }
+
+        function showVerify() {
+            console.log('Navigate to Verify');
+            // This would show the verification interface
+            alert('QR code verification functionality would be implemented here for the desktop app.');
+        }
+
+        function showPrivacy() {
+            console.log('Show Privacy Policy');
+            alert('Privacy Policy would be displayed here.');
+        }
+
+        function showTerms() {
+            console.log('Show Terms of Service');
+            alert('Terms of Service would be displayed here.');
+        }
+
+        function showContact() {
+            console.log('Show Contact');
+            alert('Contact information would be displayed here.');
+        }
+
+        // Desktop app initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('SnapHashQR Desktop App loaded successfully');
+        });
+    </script>
+</body>
+</html>

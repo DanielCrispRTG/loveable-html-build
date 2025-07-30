@@ -1,0 +1,51 @@
+{
+  "name": "snaphashqr-desktop",
+  "version": "1.0.0",
+  "description": "Mac desktop app version of SnapHashQR using Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder",
+    "build-mac": "electron-builder --mac",
+    "dist": "electron-builder --publish=never"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielCrispRTG/loveable-html-build.git"
+  },
+  "keywords": [
+    "electron",
+    "desktop",
+    "qr",
+    "verification",
+    "blockchain"
+  ],
+  "author": "Daniel Crisp",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.rtg.snaphashqr",
+    "productName": "SnapHashQR",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/DanielCrispRTG/loveable-html-build/issues"
+  },
+  "homepage": "https://github.com/DanielCrispRTG/loveable-html-build#readme"
+}
