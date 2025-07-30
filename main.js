@@ -10,6 +10,7 @@ function createMainWindow() {
     height: 800,
     minWidth: 800,
     minHeight: 600,
+    title: 'SnapHashQR - Secure Image Verification',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -17,7 +18,8 @@ function createMainWindow() {
       webSecurity: true
     },
     titleBarStyle: 'default',
-    show: false // Don't show until ready-to-show
+    show: false, // Don't show until ready-to-show
+    icon: path.join(__dirname, 'assets/icon.png')
   })
 
   // Load the app
