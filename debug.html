@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapHashQR - Debug Mode</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .debug-panel { background: #fff; border: 2px solid #007bff; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .log { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 10px; margin: 10px 0; font-family: monospace; max-height: 200px; overflow-y: auto; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        video, canvas { max-width: 300px; border: 2px solid #ddd; border-radius: 8px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 SnapHashQR Debug Mode</h1>
+    
+    <div class="debug-panel">
+        <h2>🔍 Environment Check</h2>
+        <div id="env-check">Checking environment...</div>
+        
+        <h2>📋 Debug Log</h2>
+        <div id="debug-log" class="log">Debug messages will appear here...</div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>📷 Camera Test</h2>
+        <button onclick="testCamera()" id="test-camera-btn">Test Camera</button>
+        <button onclick="stopCamera()" id="stop-camera-btn" disabled>Stop Camera</button>
+        <div id="camera-container">
+            <video id="debug-video" autoplay muted playsinline style="display: none;"></video>
+            <canvas id="debug-canvas" style="display: none;"></canvas>
+        </div>
+        <button onclick="captureTest()" id="capture-test-btn" disabled>Capture Test Photo</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>🔲 QR Scanner Test</h2>
+        <button onclick="testQRScanner()" id="test-qr-btn">Test QR Scanner</button>
+        <button onclick="stopQRScanner()" id="stop-qr-btn" disabled>Stop QR Scanner</button>
+        <div id="qr-container">
+            <video id="qr-debug-video" autoplay muted playsinline style="display: none;"></video>
+        </div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>🔗 Navigation Test</h2>
+        <button onclick="testNavigation('capture')">Test Capture Navigation</button>
+        <button onclick="testNavigation('verify')">Test Verify Navigation</button>
+        <button onclick="testNavigation('home')">Test Home Navigation</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>📊 Load Main App</h2>
+        <button onclick="loadMainApp()">Load Full SnapHashQR App</button>
+        <div>This will load the main app functionality</div>
+    </div>
+
+    <script>
+        let debugVideo = null;
+        let debugCanvas = null;
+        let debugStream = null;
+        let qrVideo = null;
+        let qrStream = null;
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('debug-log');
+            logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('debug-log').innerHTML = '';
+        }
+        
+        // Environment check
+        function checkEnvironment() {
+            const envDiv = document.getElementById('env-check');
+            let html = '';
+            
+            html += `<p><strong>User Agent:</strong> ${navigator.userAgent}</p>`;
+            html += `<p><strong>Platform:</strong> ${navigator.platform}</p>`;
+            html += `<p><strong>Electron:</strong> ${typeof require !== 'undefined' ? 'Yes' : 'No'}</p>`;
+            html += `<p><strong>Node Integration:</strong> ${typeof process !== 'undefined' ? 'Yes' : 'No'}</p>`;
+            html += `<p><strong>getUserMedia:</strong> ${navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? 'Available' : 'Not Available'}</p>`;
+            html += `<p><strong>Location:</strong> ${window.location.href}</p>`;
+            
+            envDiv.innerHTML = html;
+            
+            log('Environment check completed');
+        }
+        
+        async function testCamera() {
+            try {
+                log('Testing camera access...');
+                
+                debugVideo = document.getElementById('debug-video');
+                debugCanvas = document.getElementById('debug-canvas');
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia not available');
+                }
+                
+                log('Requesting camera permission...');
+                
+                debugStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                });
+                
+                log('Camera permission granted!');
+                
+                debugVideo.srcObject = debugStream;
+                debugVideo.style.display = 'block';
+                debugCanvas.style.display = 'block';
+                
+                debugVideo.addEventListener('loadedmetadata', () => {
+                    log('Video metadata loaded');
+                    debugCanvas.width = debugVideo.videoWidth || 640;
+                    debugCanvas.height = debugVideo.videoHeight || 480;
+                });
+                
+                debugVideo.addEventListener('playing', () => {
+                    log('Video is playing successfully');
+                    document.getElementById('test-camera-btn').disabled = true;
+                    document.getElementById('stop-camera-btn').disabled = false;
+                    document.getElementById('capture-test-btn').disabled = false;
+                });
+                
+                debugVideo.play();
+                
+            } catch (error) {
+                log('Camera test failed: ' + error.message);
+                console.error('Camera test error:', error);
+            }
+        }
+        
+        function stopCamera() {
+            try {
+                log('Stopping camera...');
+                
+                if (debugStream) {
+                    debugStream.getTracks().forEach(track => track.stop());
+                    debugStream = null;
+                }
+                
+                if (debugVideo) {
+                    debugVideo.srcObject = null;
+                    debugVideo.style.display = 'none';
+                }
+                
+                document.getElementById('test-camera-btn').disabled = false;
+                document.getElementById('stop-camera-btn').disabled = true;
+                document.getElementById('capture-test-btn').disabled = true;
+                
+                log('Camera stopped successfully');
+                
+            } catch (error) {
+                log('Error stopping camera: ' + error.message);
+            }
+        }
+        
+        function captureTest() {
+            try {
+                log('Testing photo capture...');
+                
+                if (!debugVideo || !debugCanvas) {
+                    throw new Error('Video or canvas not available');
+                }
+                
+                const ctx = debugCanvas.getContext('2d');
+                ctx.drawImage(debugVideo, 0, 0, debugCanvas.width, debugCanvas.height);
+                
+                const imageData = debugCanvas.toDataURL('image/jpeg', 0.9);
+                log(`Photo captured! Data URL length: ${imageData.length} characters`);
+                
+                // Test hash generation
+                if (typeof HashGenerator !== 'undefined') {
+                    log('Testing hash generation...');
+                    const hashGen = new HashGenerator();
+                    const metadata = {
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent,
+                        platform: navigator.platform
+                    };
+                    
+                    hashGen.generateImageHash(imageData, metadata).then(result => {
+                        log(`Hash generated: ${result.hash.substring(0, 16)}...`);
+                    }).catch(error => {
+                        log('Hash generation failed: ' + error.message);
+                    });
+                } else {
+                    log('HashGenerator not loaded');
+                }
+                
+            } catch (error) {
+                log('Capture test failed: ' + error.message);
+            }
+        }
+        
+        async function testQRScanner() {
+            try {
+                log('Testing QR scanner...');
+                
+                qrVideo = document.getElementById('qr-debug-video');
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia not available for QR scanner');
+                }
+                
+                log('Requesting camera for QR scanning...');
+                
+                qrStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' },
+                    audio: false
+                });
+                
+                log('QR scanner camera permission granted!');
+                
+                qrVideo.srcObject = qrStream;
+                qrVideo.style.display = 'block';
+                qrVideo.play();
+                
+                document.getElementById('test-qr-btn').disabled = true;
+                document.getElementById('stop-qr-btn').disabled = false;
+                
+                log('QR scanner video started - would scan for QR codes here');
+                
+            } catch (error) {
+                log('QR scanner test failed: ' + error.message);
+            }
+        }
+        
+        function stopQRScanner() {
+            try {
+                log('Stopping QR scanner...');
+                
+                if (qrStream) {
+                    qrStream.getTracks().forEach(track => track.stop());
+                    qrStream = null;
+                }
+                
+                if (qrVideo) {
+                    qrVideo.srcObject = null;
+                    qrVideo.style.display = 'none';
+                }
+                
+                document.getElementById('test-qr-btn').disabled = false;
+                document.getElementById('stop-qr-btn').disabled = true;
+                
+                log('QR scanner stopped successfully');
+                
+            } catch (error) {
+                log('Error stopping QR scanner: ' + error.message);
+            }
+        }
+        
+        function testNavigation(section) {
+            log(`Testing navigation to ${section} section`);
+            
+            if (typeof snapHashQRApp !== 'undefined') {
+                snapHashQRApp.handleAction(`show-${section}`);
+                log(`Navigation to ${section} triggered`);
+            } else {
+                log('Main app not loaded - navigation test skipped');
+            }
+        }
+        
+        function loadMainApp() {
+            log('Loading main SnapHashQR application...');
+            
+            // Hide debug interface
+            document.body.style.display = 'none';
+            
+            // Load main app
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize debug interface
+        document.addEventListener('DOMContentLoaded', () => {
+            log('SnapHashQR Debug Mode initialized');
+            checkEnvironment();
+            
+            // Test if libraries are available
+            setTimeout(() => {
+                log('Checking for required libraries...');
+                log('HashGenerator: ' + (typeof HashGenerator !== 'undefined' ? 'Available' : 'Not loaded'));
+                log('CameraCapture: ' + (typeof CameraCapture !== 'undefined' ? 'Available' : 'Not loaded'));
+                log('SimpleQRScanner: ' + (typeof SimpleQRScanner !== 'undefined' ? 'Available' : 'Not loaded'));
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Load the libraries to test them -->
+    <script src="./lib/hash-generator.js"></script>
+    <script src="./lib/qr-generator.js"></script>
+    <script src="./lib/simple-camera.js"></script>
+    <script src="./lib/simple-qr-scanner.js"></script>
+</body>
+</html>

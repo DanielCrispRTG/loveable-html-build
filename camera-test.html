@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Test for SnapHashQR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 Camera Test for SnapHashQR</h1>
+        
+        <div class="status" id="status">Ready to test camera...</div>
+        
+        <div>
+            <button onclick="startCamera()" id="startBtn">Start Camera</button>
+            <button onclick="capturePhoto()" id="captureBtn" disabled>Capture Photo</button>
+            <button onclick="stopCamera()" id="stopBtn" disabled>Stop Camera</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <video id="video" autoplay muted playsinline style="display: none;"></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const result = document.getElementById('result');
+        
+        let stream = null;
+        
+        function updateStatus(message) {
+            status.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            console.log(message);
+        }
+        
+        async function startCamera() {
+            try {
+                updateStatus('Requesting camera access...');
+                
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                });
+                
+                updateStatus('Camera access granted!');
+                
+                video.srcObject = stream;
+                video.style.display = 'block';
+                
+                video.addEventListener('loadedmetadata', () => {
+                    updateStatus('Camera stream loaded, starting video...');
+                    video.play();
+                });
+                
+                video.addEventListener('playing', () => {
+                    updateStatus('Camera is now active and streaming');
+                    startBtn.disabled = true;
+                    captureBtn.disabled = false;
+                    stopBtn.disabled = false;
+                    
+                    // Set up canvas
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 480;
+                    canvas.style.display = 'block';
+                });
+                
+            } catch (error) {
+                updateStatus('Camera error: ' + error.message);
+                console.error('Camera error:', error);
+            }
+        }
+        
+        function capturePhoto() {
+            try {
+                updateStatus('Capturing photo...');
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.9);
+                
+                result.innerHTML = `
+                    <h3>Captured Photo:</h3>
+                    <img src="${imageData}" style="max-width: 300px; border: 2px solid #007bff; border-radius: 8px;">
+                    <p><strong>Data URL length:</strong> ${imageData.length} characters</p>
+                    <p><strong>Capture time:</strong> ${new Date().toLocaleString()}</p>
+                `;
+                
+                updateStatus('Photo captured successfully!');
+                
+            } catch (error) {
+                updateStatus('Capture error: ' + error.message);
+                console.error('Capture error:', error);
+            }
+        }
+        
+        function stopCamera() {
+            try {
+                updateStatus('Stopping camera...');
+                
+                if (stream) {
+                    stream.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                    stream = null;
+                }
+                
+                video.srcObject = null;
+                video.style.display = 'none';
+                
+                startBtn.disabled = false;
+                captureBtn.disabled = true;
+                stopBtn.disabled = true;
+                
+                updateStatus('Camera stopped');
+                
+            } catch (error) {
+                updateStatus('Stop error: ' + error.message);
+                console.error('Stop error:', error);
+            }
+        }
+        
+        // Test if we're in Electron
+        updateStatus('Environment: ' + (typeof require !== 'undefined' ? 'Electron' : 'Browser'));
+        
+        // Check for camera availability
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            updateStatus('Camera API available - click Start Camera to test');
+        } else {
+            updateStatus('Camera API not available in this environment');
+        }
+    </script>
+</body>
+</html>
