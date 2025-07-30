@@ -16,7 +16,14 @@
     "type": "git",
     "url": "git+https://github.com/DanielCrispRTG/loveable-html-build.git"
   },
-  "keywords": ["electron", "desktop", "qr", "verification", "blockchain", "hashgraph"],
+  "keywords": [
+    "electron",
+    "desktop",
+    "qr",
+    "verification",
+    "blockchain",
+    "hashgraph"
+  ],
   "author": "Daniel Crisp - RTG",
   "license": "ISC",
   "devDependencies": {
@@ -44,6 +51,10 @@
           "x64",
           "arm64"
         ]
+      },
+      "extendInfo": {
+        "NSCameraUsageDescription": "SnapHashQR needs camera access to capture photos for verification.",
+        "NSMicrophoneUsageDescription": "SnapHashQR may need microphone access for video capture."
       }
     },
     "win": {
@@ -56,5 +67,9 @@
   "bugs": {
     "url": "https://github.com/DanielCrispRTG/loveable-html-build/issues"
   },
-  "homepage": "https://github.com/DanielCrispRTG/loveable-html-build#readme"
+  "homepage": "https://github.com/DanielCrispRTG/loveable-html-build#readme",
+  "dependencies": {
+    "qr-scanner": "^1.4.2",
+    "qrcode": "^1.5.4"
+  }
 }

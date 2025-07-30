@@ -529,18 +529,11 @@
         </div>
     </div>
 
-    <!-- Load QR Scanner Library -->
-    <script type="module">
-        // Load QR Scanner as a module
-        import QrScanner from './lib/qr-scanner.min.js';
-        window.QrScanner = QrScanner;
-    </script>
-    
-    <!-- Load Application Modules -->
+    <!-- Load Application Libraries -->
     <script src="./lib/hash-generator.js"></script>
     <script src="./lib/qr-generator.js"></script>
-    <script src="./lib/camera-capture.js"></script>
-    <script src="./lib/qr-scanner-module.js"></script>
-    <script src="./lib/app-controller.js"></script>
+    <script src="./lib/simple-camera.js"></script>
+    <script src="./lib/simple-qr-scanner.js"></script>
+    <script src="./lib/simple-app.js"></script>
 </body>
 </html>

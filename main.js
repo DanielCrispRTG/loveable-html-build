@@ -12,10 +12,11 @@ function createMainWindow() {
     minHeight: 600,
     title: 'SnapHashQR - Secure Image Verification',
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: false,
-      webSecurity: true
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      webSecurity: false, // Allow camera access
+      allowRunningInsecureContent: true
     },
     titleBarStyle: 'default',
     show: false, // Don't show until ready-to-show
